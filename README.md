@@ -2,258 +2,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  
-</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 
 <body>
 
 <header>
-    <h1>Research Abstract Sentiment Analysis</h1>
-    <p>Machine Learning & BERT-based NLP Project</p>
+<h1>Research Abstract Sentiment Analysis</h1>
+<p>Machine Learning → Deep Learning → Transformer (NLP Project)</p>
 </header>
 
 <section>
-    <h2>📌 Project Overview</h2>
-    <p>
-        This project implements an automated system to analyze the sentiment of
-        research paper abstracts using Natural Language Processing (NLP) and
-        Machine Learning techniques. The abstracts are classified into
-        <strong>Positive</strong>, <strong>Neutral</strong>, or <strong>Negative</strong>
-        categories to assist researchers during literature reviews.
-    </p>
+<h2>📌 Project Overview</h2>
+<p>
+This project implements an automated system to analyze the sentiment of research
+paper abstracts using Natural Language Processing (NLP). Abstracts are classified
+into <strong>Positive</strong>, <strong>Neutral</strong>, or <strong>Negative</strong>
+categories to assist researchers during literature review and analysis.
+</p>
 </section>
 
 <section>
-    <h2>🎯 Objectives</h2>
-    <ul>
-        <li>Automate sentiment analysis of academic abstracts</li>
-        <li>Reduce manual effort during literature survey</li>
-        <li>Compare classical ML models with transformer models</li>
-        <li>Provide an interactive web interface</li>
-    </ul>
+<h2>🎯 Objectives</h2>
+<ul>
+<li>Automate sentiment analysis of academic abstracts</li>
+<li>Compare classical ML, deep learning, and transformer models</li>
+<li>Analyze model behavior using confusion matrices and graphs</li>
+<li>Deploy a real-time sentiment analysis web application</li>
+</ul>
 </section>
 
 <section>
-    <h2>🧠 Models Implemented</h2>
+<h2>🧠 Models Implemented (Model Evolution)</h2>
 
-<h3>Logistic Regression (TF-IDF)</h3>
-    <ul>
-        <li>Simple and interpretable</li>
-        <li>Accuracy ≈ 72%</li>
-    </ul>
+<h3>1️⃣ Logistic Regression (TF-IDF) – Machine Learning</h3>
+<ul>
+<li>Traditional NLP pipeline using TF-IDF feature extraction</li>
+<li>Interpretable and efficient baseline model</li>
+<li>Accuracy ≈ 72%</li>
+</ul>
 
- <h3>Random Forest (TF-IDF)</h3>
-    <ul>
-        <li>Ensemble-based classifier</li>
-        <li>Accuracy ≈ 73%</li>
-    </ul>
+<h3>2️⃣ Random Forest (TF-IDF) – Ensemble ML</h3>
+<ul>
+<li>Tree-based ensemble classifier</li>
+<li>Captures non-linear patterns</li>
+<li>Accuracy ≈ 73%</li>
+</ul>
 
-<h3>BERT (Transformer Model)</h3>
-    <ul>
-        <li>Model: <code>bert-base-uncased</code></li>
-        <li>Context-aware sentiment understanding</li>
-        <li>Accuracy ≈ 80–85%</li>
-    </ul>
+<h3>3️⃣ LSTM – Deep Learning</h3>
+<ul>
+<li>Sequence-based neural network using word embeddings</li>
+<li>Trained to capture contextual dependencies in abstracts</li>
+<li>Accuracy ≈ 68%</li>
+</ul>
+
+<p>
+Although the LSTM achieved reasonable accuracy, class-wise evaluation revealed
+strong bias toward the majority class due to class imbalance introduced by
+automatic sentiment labeling. This demonstrates the limitations of deep learning
+models on imbalanced datasets.
+</p>
+
+<h3>4️⃣ BERT – Transformer Model</h3>
+<ul>
+<li>Pretrained transformer-based NLP model</li>
+<li>Context-aware sentiment understanding</li>
+<li>Accuracy ≈ 80–85%</li>
+<li>Used in deployed application</li>
+</ul>
 </section>
 
 <section>
-    <h2>🔄 System Workflow</h2>
-    <pre>
+<h2>🏗️ System Architecture</h2>
+<pre>
 User Input (Abstract)
         ↓
 Text Preprocessing
         ↓
-TF-IDF / BERT Tokenization
+Feature Representation
+   ├─ TF-IDF Vectorization
+   ├─ Word Embeddings (LSTM)
+   └─ BERT Tokenization
         ↓
 Model Prediction
         ↓
 Sentiment Output
-    </pre>
+        ↓
+Visualization & Export
+</pre>
 </section>
 
 <section>
-    <h2>🛠️ Technologies Used</h2>
-    <ul>
-        <li>Python</li>
-        <li>NLTK, TF-IDF</li>
-        <li>Scikit-learn</li>
-        <li>PyTorch</li>
-        <li>Hugging Face Transformers</li>
-        <li>Streamlit</li>
-    </ul>
+<h2>📊 Evaluation & Results</h2>
+
+<h3>Logistic Regression – Confusion Matrix</h3>
+<img src="output.png" alt="Logistic Regression Confusion Matrix">
+<figcaption>Figure 1: Confusion Matrix – Logistic Regression</figcaption>
+
+<h3>Random Forest – Confusion Matrix</h3>
+<img src="outpu1t.png" alt="Random Forest Confusion Matrix">
+<figcaption>Figure 2: Confusion Matrix – Random Forest</figcaption>
+
+<h3>LSTM – Confusion Matrix</h3>
+<img src="output4.png" alt="LSTM Confusion Matrix">
+<figcaption>Figure 3: Confusion Matrix – LSTM (Majority Class Bias)</figcaption>
+
+<h3>LSTM Training Performance</h3>
+<img src="output5.png" alt="LSTM Accuracy Curve">
+<figcaption>Figure 4: LSTM Training vs Validation Accuracy</figcaption>
+
+<img src="output6.png" alt="LSTM Loss Curve">
+<figcaption>Figure 5: LSTM Training vs Validation Loss</figcaption>
+
+<h3>Model Accuracy Comparison</h3>
+<img src="output3.png" alt="Model Accuracy Comparison">
+<figcaption>Figure 6: Accuracy Comparison – ML vs LSTM vs BERT</figcaption>
+</section>
+<section>
+<h2>🏗️ System Architecture</h2>
+
+<p>
+The Research Abstract Sentiment Analysis system follows a modular and layered
+architecture. Each stage of the pipeline is independent, allowing multiple
+NLP models to be evaluated and compared efficiently.
+</p>
+
+<pre>
+┌───────────────────────────────┐
+│        User Interface         │
+│     (Streamlit Web App)       │
+└───────────────┬───────────────┘
+                ↓
+┌───────────────────────────────┐
+│        Input Layer            │
+│  Research Abstract / CSV File │
+└───────────────┬───────────────┘
+                ↓
+┌───────────────────────────────┐
+│     Text Preprocessing        │
+│ • Lowercasing                 │
+│ • Stopword Removal            │
+│ • Noise & Symbol Cleaning     │
+│ • Tokenization                │
+└───────────────┬───────────────┘
+                ↓
+┌─────────────────────────────────────────────┐
+│        Feature Representation Layer          │
+│ ┌──────────────────┐  ┌──────────────────┐ │
+│ │  TF-IDF Vectors  │  │  Word Embeddings │ │
+│ └──────────────────┘  └──────────────────┘ │
+│              ┌──────────────────────────┐  │
+│              │     BERT Tokenization     │  │
+│              └──────────────────────────┘  │
+└───────────────┬─────────────────────────────┘
+                ↓
+┌─────────────────────────────────────────────┐
+│          Model Selection Layer               │
+│ ┌──────────────────┐ ┌───────────────────┐ │
+│ │ Logistic Reg.    │ │ Random Forest     │ │
+│ └──────────────────┘ └───────────────────┘ │
+│           ┌────────────────────────────┐  │
+│           │            LSTM             │  │
+│           └────────────────────────────┘  │
+│           ┌────────────────────────────┐  │
+│           │            BERT             │  │
+│           └────────────────────────────┘  │
+└───────────────┬─────────────────────────────┘
+                ↓
+┌───────────────────────────────┐
+│     Sentiment Prediction      │
+│  Positive / Neutral / Negative│
+└───────────────┬───────────────┘
+                ↓
+┌───────────────────────────────┐
+│  Visualization & Reporting    │
+│ • Confusion Matrix            │
+│ • Accuracy & Loss Graphs      │
+│ • CSV / PDF / Word Export     │
+└───────────────────────────────┘
+</pre>
+
+<p>
+For deployment, lightweight models (Logistic Regression and BERT) are integrated
+into the Streamlit application. The LSTM model is included for academic evaluation
+and comparison but is not deployed due to computational constraints.
+</p>
+
 </section>
 
 <section>
-    <h2>📂 Project Structure</h2>
-    <pre>
-Research-Abstract-Sentiment-Analysis/
-│
-├── app.py
-├── requirements.txt
-├── README.html
-│
-├── bert_model/
-├── logistic_regression_model.pkl
-├── random_forest_model.pkl
-├── tfidf_vectorizer.pkl
-└── arxiv_sample.csv
-    </pre>
+<h2>🚀 Deployment</h2>
+<p>
+The application is deployed using <strong>Streamlit Cloud</strong>.
+For deployment stability, only Logistic Regression and BERT models are used.
+The LSTM model is included for academic comparison and analysis but is not deployed
+due to computational and dependency constraints.
+</p>
+
+<p>
+<strong>Live App:</strong><br>
+<a href="https://cuoaoxdqzbdfqghkjmhw22.streamlit.app/" target="_blank">
+https://cuoaoxdqzbdfqghkjmhw22.streamlit.app/
+</a>
+</p>
 </section>
 
 <section>
-    <h2>🚀 How to Run</h2>
-    <pre>
-conda create -n research_sentiment python=3.10
-conda activate research_sentiment
-pip install -r requirements.txt
-streamlit run app.py
-    </pre>
+<h2>🛠️ Technologies Used</h2>
+<ul>
+<li>Python</li>
+<li>NLTK, TF-IDF</li>
+<li>Scikit-learn</li>
+<li>TensorFlow (LSTM)</li>
+<li>Hugging Face Transformers</li>
+<li>PyTorch</li>
+<li>Streamlit</li>
+<li>Matplotlib, Seaborn</li>
+</ul>
 </section>
 
 <section>
-    <h2>📈 Results</h2>
-    <table>
-        <tr>
-            <th>Model</th>
-            <th>Accuracy</th>
-        </tr>
-        <tr>
-            <td>Logistic Regression</td>
-            <td>~72%</td>
-        </tr>
-        <tr>
-            <td>Random Forest</td>
-            <td>~73%</td>
-        </tr>
-        <tr>
-            <td><strong>BERT</strong></td>
-            <td><strong>~80–85%</strong></td>
-        </tr>
-    </table>
+<h2>🔮 Future Scope</h2>
+<ul>
+<li>Balanced and human-labeled sentiment datasets</li>
+<li>SciBERT-based sentiment classification</li>
+<li>Retrieval-Augmented Generation (RAG) for explanations</li>
+<li>Full research paper PDF analysis</li>
+</ul>
 </section>
 
 <section>
-    <h2>🔮 Future Scope</h2>
-    <ul>
-        <li>PDF-based full paper sentiment analysis</li>
-        <li>SciBERT integration</li>
-        <li>Summarization + sentiment</li>
-        <li>Deployment on Hugging Face Spaces</li>
-    </ul>
+<h2>👩‍💻 Author</h2>
+<p>
+  
+<strong>Sparshi Jain</strong><br>
+thanks
+B.Tech – Mathematics & Computing<br>
+Minor Project – Machine Learning & NLP
+</p>
 </section>
-
-<section>
-    <h2>👩‍💻 Author</h2>
-    <p>
-        <strong>Sparshi Jain</strong><br>
-        B.Tech – Mathematics & Computing<br>
-        Minor Project – Machine Learning & NLP
-    </p>
-</section>
-<section>
-    <h2>🏗️ System Architecture</h2>
-    <p>
-        The architecture of the Research Abstract Sentiment Analysis system follows
-        a modular pipeline-based design. Each component is independent and contributes
-        to efficient sentiment prediction.
-    </p>
-
- <pre>
-┌──────────────────────────┐
-│        User Input        │
-│  (Research Abstract)     │
-└────────────┬─────────────┘
-             ↓
-┌──────────────────────────┐
-│   Text Preprocessing     │
-│ - Lowercasing            │
-│ - Stopword Removal       │
-│ - Tokenization           │
-│ - Cleaning               │
-└────────────┬─────────────┘
-             ↓
-┌─────────────────────────────────────┐
-│        Feature Engineering           │
-│ ┌───────────────┐  ┌──────────────┐ │
-│ │ TF-IDF Vector │  │ BERT Tokenizer│ │
-│ └───────────────┘  └──────────────┘ │
-└────────────┬────────────────────────┘
-             ↓
-┌─────────────────────────────────────┐
-│       Model Selection Layer         │
-│ ┌──────────────┐ ┌───────────────┐ │
-│ │ Logistic Reg │ │ Random Forest │ │
-│ └──────────────┘ └───────────────┘ │
-│            ┌────────────────────┐ │
-│            │        BERT         │ │
-│            └────────────────────┘ │
-└────────────┬────────────────────────┘
-             ↓
-┌──────────────────────────┐
-│   Sentiment Prediction   │
-│ (Positive / Neutral /    │
-│        Negative)         │
-└────────────┬─────────────┘
-             ↓
-┌──────────────────────────┐
-│  Streamlit Web Interface │
-│   (Result Display)       │
-└──────────────────────────┘
-    </pre>
-</section>
-
-<section>
-    <h3>Random Forest – Confusion Matrix</h3>
-    <p>
-        The confusion matrix below illustrates the classification performance
-        of the Random Forest model across positive, neutral, and negative classes.
-    </p>
-
- <img src="outpu1t.png"
-         alt="Random Forest Confusion Matrix"
-         style="width:80%; max-width:700px; display:block; margin:auto;">
-
-<p style="text-align:center; font-style:italic;">
-        Figure 1: Confusion Matrix for Random Forest Model
-    </p>
-</section>
-<section>
-    <h3>Logistic Regression – Confusion Matrix</h3>
-    <p>
-        This confusion matrix represents the performance of the Logistic Regression
-        classifier on the test dataset.
-    </p>
-
- <img src="output.png"
-         alt="Logistic Regression Confusion Matrix"
-         style="width:80%; max-width:700px; display:block; margin:auto;">
-
-<p style="text-align:center; font-style:italic;">
-        Figure 2: Confusion Matrix for Logistic Regression Model
-    </p>
-</section>
-
-<section>
-    <h3>Model Accuracy Comparison</h3>
-
-  <img src="output3.png"
-         alt="Model Accuracy Comparison"
-         style="width:70%; max-width:600px; display:block; margin:auto;">
-
-<p style="text-align:center; font-style:italic;">
-        Figure 3: Accuracy comparison between Logistic Regression, Random Forest, and BERT
-    </p>
-</section>
-
-
-
-
 
 <footer>
-    <p>© 2025 Research Abstract Sentiment Analysis</p>
+<p>© 2025 Research Abstract Sentiment Analysis</p>
 </footer>
 
 </body>
 </html>
+
+  
+
+
+
+
+
+
 
