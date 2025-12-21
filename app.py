@@ -60,13 +60,13 @@ def download_model(url, filename):
 def load_ml_models():
     download_model(TFIDF_URL, "tfidf_vectorizer.pkl")
     download_model(LR_URL, "logistic_regression_model.pkl")
-    download_model(RF_URL, "random_forest_model.pkl")
+    
 
     tfidf = pickle.load(open("tfidf_vectorizer.pkl", "rb"))
     lr_model = pickle.load(open("logistic_regression_model.pkl", "rb"))
-    rf_model = pickle.load(open("random_forest_model.pkl", "rb"))
+   
 
-    return tfidf, lr_model, rf_model
+    return tfidf, lr_model
 
 
 # ==============================================================
@@ -262,5 +262,6 @@ else:
                 else predict_tf_idf(text, model_choice)
             )
             st.success(f"✅ Predicted Sentiment: **{result.upper()}**")
+
 
 
