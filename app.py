@@ -3,30 +3,84 @@
 # Author: Sparshi Jain
 # ==============================================================
 
+# ==============================================================
+# STREAMLIT DASHBOARD + EXPORT SENTIMENT ANALYSIS (ML + BERT)
+# Author: Sparshi Jain
+# ==============================================================
+
 import streamlit as st
 import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
-from docx import Document
-from fpdf import FPDF
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import os
+import requests
 import torch
 
-# ------------------------------------------------------------
-# Load Models
-# ------------------------------------------------------------
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+# Optional exports (safe)
+try:
+    from docx import Document
+except ImportError:
+    Document = None
+
+try:
+    from fpdf import FPDF
+except ImportError:
+    FPDF = None
+
+
+# ==============================================================
+# MODEL DOWNLOAD URLS (GitHub RAW)
+# ==============================================================
+
+TFIDF_URL = "https://raw.githubusercontent.com/sparshi15/Research-Paper-Abstract-Sentiment-Analysis-By-Machine-Learning-/main/tfidf_vectorizer.pkl"
+LR_URL = "https://raw.githubusercontent.com/sparshi15/Research-Paper-Abstract-Sentiment-Analysis-By-Machine-Learning-/main/logistic_regression_model.pkl"
+
+
+
+# ==============================================================
+# DOWNLOAD HELPER
+# ==============================================================
+
+def download_model(url, filename):
+    if not os.path.exists(filename):
+        with st.spinner(f"Downloading {filename}..."):
+            r = requests.get(url)
+            r.raise_for_status()
+            with open(filename, "wb") as f:
+                f.write(r.content)
+
+
+# ==============================================================
+# LOAD ML MODELS (TF-IDF)
+# ==============================================================
+
 @st.cache_resource
 def load_ml_models():
-    tfidf = pickle.load(open(r"C:\Users\91706\OneDrive\Attachments\Desktop\sen\tfidf_vectorizer.pkl", "rb"))
-    lr_model = pickle.load(open(r"C:\Users\91706\OneDrive\Attachments\Desktop\sen\logistic_regression_model.pkl", "rb"))
-    rf_model = pickle.load(open(r"C:\Users\91706\OneDrive\Attachments\Desktop\sen\random_forest_model.pkl", "rb"))
+    download_model(TFIDF_URL, "tfidf_vectorizer.pkl")
+    download_model(LR_URL, "logistic_regression_model.pkl")
+    download_model(RF_URL, "random_forest_model.pkl")
+
+    tfidf = pickle.load(open("tfidf_vectorizer.pkl", "rb"))
+    lr_model = pickle.load(open("logistic_regression_model.pkl", "rb"))
+    rf_model = pickle.load(open("random_forest_model.pkl", "rb"))
+
     return tfidf, lr_model, rf_model
 
 
+# ==============================================================
+# LOAD BERT MODEL
+# ==============================================================
+
 @st.cache_resource
 def load_bert():
-    tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
-    model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+    tokenizer = AutoTokenizer.from_pretrained(
+        "nlptown/bert-base-multilingual-uncased-sentiment"
+    )
+    model = AutoModelForSequenceClassification.from_pretrained(
+        "nlptown/bert-base-multilingual-uncased-sentiment"
+    )
     return tokenizer, model
 
 
@@ -34,140 +88,179 @@ tfidf, lr_model, rf_model = load_ml_models()
 bert_tokenizer, bert_model = load_bert()
 
 
-# ------------------------------------------------------------
-# Prediction Functions
-# ------------------------------------------------------------
+# ==============================================================
+# PREDICTION FUNCTIONS
+# ==============================================================
+
 def predict_tf_idf(text, model_name):
     X = tfidf.transform([text])
-    return lr_model.predict(X)[0] if model_name == "Logistic Regression (TF-IDF)" else rf_model.predict(X)[0]
+    if model_name == "Logistic Regression (TF-IDF)":
+        return lr_model.predict(X)[0]
+    else:
+        return rf_model.predict(X)[0]
 
 
 def predict_bert(text):
-    tokens = bert_tokenizer(text, return_tensors="pt", truncation=True, padding=True)
-    output = bert_model(**tokens)
+    tokens = bert_tokenizer(
+        text, return_tensors="pt", truncation=True, padding=True
+    )
+    with torch.no_grad():
+        output = bert_model(**tokens)
+
     pred = torch.argmax(output.logits).item()
     return ["negative", "negative", "neutral", "positive", "positive"][pred]
 
 
-# ------------------------------------------------------------
-# Export Functions
-# ------------------------------------------------------------
+# ==============================================================
+# EXPORT FUNCTIONS
+# ==============================================================
+
 def export_to_word(df):
+    if Document is None:
+        st.error("python-docx not installed.")
+        return None
+
     doc = Document()
     doc.add_heading("Sentiment Analysis Report", level=1)
 
     table = doc.add_table(rows=1, cols=len(df.columns))
     table.style = "Table Grid"
-    hdr = table.rows[0].cells
 
     for i, col in enumerate(df.columns):
-        hdr[i].text = col
+        table.rows[0].cells[i].text = col
 
     for _, row in df.iterrows():
         row_cells = table.add_row().cells
-        for i, value in enumerate(row):
-            row_cells[i].text = str(value)
+        for i, val in enumerate(row):
+            row_cells[i].text = str(val)
 
-    doc.save("Sentiment_Report.docx")
-    return "Sentiment_Report.docx"
+    filename = "Sentiment_Report.docx"
+    doc.save(filename)
+    return filename
 
 
 def export_to_pdf(df):
+    if FPDF is None:
+        st.error("fpdf not installed.")
+        return None
+
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=9)
+    pdf.cell(200, 10, "Sentiment Analysis Report", ln=True, align="C")
 
-    pdf.cell(200, 10, txt="Sentiment Analysis Report", ln=True, align="C")
+    for _, row in df.iterrows():
+        pdf.multi_cell(0, 5, str(row.to_dict()))
 
-    for i in range(len(df)):
-        pdf.cell(200, 5, txt=str(df.iloc[i].to_dict()), ln=True)
-
-    pdf.output("Sentiment_Report.pdf")
-    return "Sentiment_Report.pdf"
+    filename = "Sentiment_Report.pdf"
+    pdf.output(filename)
+    return filename
 
 
-# =============================================================
+# ==============================================================
 # STREAMLIT UI
-# =============================================================
+# ==============================================================
+
 st.set_page_config(page_title="Research Sentiment Dashboard", layout="wide")
 st.title("📊 Research Abstract Sentiment Dashboard")
 
 st.sidebar.title("⚙ Settings")
+
 model_choice = st.sidebar.selectbox(
     "Choose Sentiment Model",
-    ["Logistic Regression (TF-IDF)", "Random Forest (TF-IDF)", "BERT (Pretrained)"]
+    [
+        "Logistic Regression (TF-IDF)",
+        "Random Forest (TF-IDF)",
+        "BERT (Pretrained)"
+    ]
 )
 
-mode = st.sidebar.radio("Mode", ["Upload CSV", "Manual Text Prediction"])
+mode = st.sidebar.radio(
+    "Mode",
+    ["Upload CSV", "Manual Text Prediction"]
+)
+
 st.sidebar.markdown("---")
 
-# =============================================================
-# ✅ CSV Upload Prediction
-# =============================================================
+
+# ==============================================================
+# CSV UPLOAD MODE
+# ==============================================================
+
 if mode == "Upload CSV":
-    uploaded_file = st.file_uploader("📂 Upload CSV (must include 'abstract' column)", type=["csv"])
+    uploaded_file = st.file_uploader(
+        "📂 Upload CSV (must include 'abstract' column)",
+        type=["csv"]
+    )
 
     if uploaded_file:
         df = pd.read_csv(uploaded_file)
 
         if "abstract" not in df.columns:
-            st.error("❌ CSV must include an `abstract` column")
+            st.error("❌ CSV must contain an 'abstract' column.")
         else:
             if st.button("🚀 Predict Sentiment"):
-                with st.spinner("Processing..."):
+                with st.spinner("Analyzing abstracts..."):
                     if model_choice == "BERT (Pretrained)":
                         df["Predicted Sentiment"] = df["abstract"].apply(predict_bert)
-                        accuracy = None
                     else:
-                        df["Predicted Sentiment"] = df["abstract"].apply(lambda x: predict_tf_idf(x, model_choice))
-                        accuracy = None  # You can load saved test accuracy here if needed
+                        df["Predicted Sentiment"] = df["abstract"].apply(
+                            lambda x: predict_tf_idf(x, model_choice)
+                        )
 
                 st.subheader("✅ Prediction Results")
                 st.dataframe(df.head())
 
-                # ===== Metrics =====
                 st.subheader("📌 Metrics Summary")
                 sentiment_counts = df["Predicted Sentiment"].value_counts(normalize=True) * 100
 
-                col1, col2, col3, col4 = st.columns(4)
+                col1, col2, col3 = st.columns(3)
                 col1.metric("Positive %", f"{sentiment_counts.get('positive', 0):.2f}%")
                 col2.metric("Neutral %", f"{sentiment_counts.get('neutral', 0):.2f}%")
                 col3.metric("Negative %", f"{sentiment_counts.get('negative', 0):.2f}%")
-                if accuracy:
-                    col4.metric("Model Accuracy", f"{accuracy:.2%}")
 
-                # ===== Pie Chart =====
-                st.subheader("🟢 Sentiment Pie Chart")
+                st.subheader("🟢 Sentiment Distribution")
                 fig, ax = plt.subplots()
-                df["Predicted Sentiment"].value_counts().plot(kind="pie", autopct="%1.1f%%", ax=ax)
+                df["Predicted Sentiment"].value_counts().plot(
+                    kind="pie", autopct="%1.1f%%", ax=ax
+                )
                 ax.set_ylabel("")
                 st.pyplot(fig)
 
-                # ===== Bar Chart =====
-                st.subheader("📉 Sentiment Bar Chart")
-                fig2, ax2 = plt.subplots()
-                df["Predicted Sentiment"].value_counts().plot(kind="bar", ax=ax2)
-                st.pyplot(fig2)
-
-                # ===== Export =====
                 st.subheader("⬇ Export Results")
-                st.download_button("Download CSV", df.to_csv(index=False), "sentiment_results.csv")
+                st.download_button(
+                    "Download CSV",
+                    df.to_csv(index=False),
+                    "sentiment_results.csv"
+                )
 
                 if st.button("Download Word Report"):
                     file = export_to_word(df)
-                    st.download_button("Download Word", open(file, "rb"), file_name=file)
+                    if file:
+                        st.download_button("Download Word", open(file, "rb"), file)
 
                 if st.button("Download PDF Report"):
                     file = export_to_pdf(df)
-                    st.download_button("Download PDF", open(file, "rb"), file_name=file)
+                    if file:
+                        st.download_button("Download PDF", open(file, "rb"), file)
 
 
-# =============================================================
-# ✅ Manual Text Prediction
-# =============================================================
+# ==============================================================
+# MANUAL TEXT MODE
+# ==============================================================
+
 else:
     text = st.text_area("✍ Enter Research Abstract:")
 
     if st.button("Predict"):
-        result = predict_bert(text) if model_choice == "BERT (Pretrained)" else predict_tf_idf(text, model_choice)
-        st.success(f"✅ Predicted Sentiment: **{result.upper()}**")
+        if not text.strip():
+            st.warning("Please enter some text.")
+        else:
+            result = (
+                predict_bert(text)
+                if model_choice == "BERT (Pretrained)"
+                else predict_tf_idf(text, model_choice)
+            )
+            st.success(f"✅ Predicted Sentiment: **{result.upper()}**")
+
+
