@@ -1,10 +1,5 @@
 # ==============================================================
-# STREAMLIT DASHBOARD + EXPORT SENTIMENT ANALYSIS (ML + BERT)
-# Author: Sparshi Jain
-# ==============================================================
-
-# ==============================================================
-# STREAMLIT DASHBOARD + EXPORT SENTIMENT ANALYSIS (ML + BERT)
+# STREAMLIT DASHBOARD + EXPORT SENTIMENT ANALYSIS (LR + BERT)
 # Author: Sparshi Jain
 # ==============================================================
 
@@ -15,7 +10,6 @@ import matplotlib.pyplot as plt
 import os
 import requests
 import torch
-
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 # Optional exports (safe)
@@ -34,9 +28,17 @@ except ImportError:
 # MODEL DOWNLOAD URLS (GitHub RAW)
 # ==============================================================
 
-TFIDF_URL = "https://raw.githubusercontent.com/sparshi15/Research-Paper-Abstract-Sentiment-Analysis-By-Machine-Learning-/main/tfidf_vectorizer.pkl"
-LR_URL = "https://raw.githubusercontent.com/sparshi15/Research-Paper-Abstract-Sentiment-Analysis-By-Machine-Learning-/main/logistic_regression_model.pkl"
+TFIDF_URL = (
+    "https://raw.githubusercontent.com/sparshi15/"
+    "Research-Paper-Abstract-Sentiment-Analysis-By-Machine-Learning-/main/"
+    "tfidf_vectorizer.pkl"
+)
 
+LR_URL = (
+    "https://raw.githubusercontent.com/sparshi15/"
+    "Research-Paper-Abstract-Sentiment-Analysis-By-Machine-Learning-/main/"
+    "logistic_regression_model.pkl"
+)
 
 
 # ==============================================================
@@ -53,20 +55,24 @@ def download_model(url, filename):
 
 
 # ==============================================================
-# LOAD ML MODELS (TF-IDF)
+# LOAD LOGISTIC REGRESSION MODEL
 # ==============================================================
 
 @st.cache_resource
 def load_ml_models():
-    download_model(TFIDF_URL, "tfidf_vectorizer.pkl")
-    download_model(LR_URL, "logistic_regression_model.pkl")
-    
+    try:
+        download_model(TFIDF_URL, "tfidf_vectorizer.pkl")
+        download_model(LR_URL, "logistic_regression_model.pkl")
 
-    tfidf = pickle.load(open("tfidf_vectorizer.pkl", "rb"))
-    lr_model = pickle.load(open("logistic_regression_model.pkl", "rb"))
-   
+        tfidf = pickle.load(open("tfidf_vectorizer.pkl", "rb"))
+        lr_model = pickle.load(open("logistic_regression_model.pkl", "rb"))
 
-    return tfidf, lr_model
+        return tfidf, lr_model
+
+    except Exception as e:
+        st.error("❌ Failed to load Logistic Regression model.")
+        st.exception(e)
+        st.stop()
 
 
 # ==============================================================
@@ -84,7 +90,7 @@ def load_bert():
     return tokenizer, model
 
 
-tfidf, lr_model, rf_model = load_ml_models()
+tfidf, lr_model = load_ml_models()
 bert_tokenizer, bert_model = load_bert()
 
 
@@ -92,12 +98,9 @@ bert_tokenizer, bert_model = load_bert()
 # PREDICTION FUNCTIONS
 # ==============================================================
 
-def predict_tf_idf(text, model_name):
+def predict_tf_idf(text):
     X = tfidf.transform([text])
-    if model_name == "Logistic Regression (TF-IDF)":
-        return lr_model.predict(X)[0]
-    else:
-        return rf_model.predict(X)[0]
+    return lr_model.predict(X)[0]
 
 
 def predict_bert(text):
@@ -130,9 +133,9 @@ def export_to_word(df):
         table.rows[0].cells[i].text = col
 
     for _, row in df.iterrows():
-        row_cells = table.add_row().cells
+        cells = table.add_row().cells
         for i, val in enumerate(row):
-            row_cells[i].text = str(val)
+            cells[i].text = str(val)
 
     filename = "Sentiment_Report.docx"
     doc.save(filename)
@@ -168,10 +171,7 @@ st.sidebar.title("⚙ Settings")
 
 model_choice = st.sidebar.selectbox(
     "Choose Sentiment Model",
-    [
-        "Logistic Regression (TF-IDF)",
-        "BERT (Pretrained)"
-    ]
+    ["Logistic Regression (TF-IDF)", "BERT (Pretrained)"]
 )
 
 mode = st.sidebar.radio(
@@ -203,9 +203,7 @@ if mode == "Upload CSV":
                     if model_choice == "BERT (Pretrained)":
                         df["Predicted Sentiment"] = df["abstract"].apply(predict_bert)
                     else:
-                        df["Predicted Sentiment"] = df["abstract"].apply(
-                            lambda x: predict_tf_idf(x, model_choice)
-                        )
+                        df["Predicted Sentiment"] = df["abstract"].apply(predict_tf_idf)
 
                 st.subheader("✅ Prediction Results")
                 st.dataframe(df.head())
@@ -258,9 +256,11 @@ else:
             result = (
                 predict_bert(text)
                 if model_choice == "BERT (Pretrained)"
-                else predict_tf_idf(text, model_choice)
+                else predict_tf_idf(text)
             )
             st.success(f"✅ Predicted Sentiment: **{result.upper()}**")
+
+
 
 
 
