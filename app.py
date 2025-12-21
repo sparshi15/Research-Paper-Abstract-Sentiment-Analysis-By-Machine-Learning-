@@ -170,7 +170,6 @@ model_choice = st.sidebar.selectbox(
     "Choose Sentiment Model",
     [
         "Logistic Regression (TF-IDF)",
-        "Random Forest (TF-IDF)",
         "BERT (Pretrained)"
     ]
 )
@@ -262,6 +261,7 @@ else:
                 else predict_tf_idf(text, model_choice)
             )
             st.success(f"✅ Predicted Sentiment: **{result.upper()}**")
+
 
 
 
