@@ -3,157 +3,143 @@
 <html lang="en">
 <head>
 
+  
+</head>
 
 <body>
 
 <header>
     <h1>Research Abstract Sentiment Analysis</h1>
-    <p>Machine Learning & NLP-based Academic Text Analysis</p>
+    <p>Machine Learning & BERT-based NLP Project</p>
 </header>
 
 <section>
     <h2>📌 Project Overview</h2>
     <p>
         This project implements an automated system to analyze the sentiment of
-        research paper abstracts using Machine Learning and Natural Language Processing.
-        The system classifies abstracts into <strong>Positive</strong>,
-        <strong>Neutral</strong>, or <strong>Negative</strong> categories to help
-        researchers quickly prioritize papers during literature surveys.
+        research paper abstracts using Natural Language Processing (NLP) and
+        Machine Learning techniques. The abstracts are classified into
+        <strong>Positive</strong>, <strong>Neutral</strong>, or <strong>Negative</strong>
+        categories to assist researchers during literature reviews.
     </p>
 </section>
 
 <section>
     <h2>🎯 Objectives</h2>
     <ul>
-        <li>Automate sentiment classification of research abstracts</li>
-        <li>Reduce manual effort in literature review</li>
-        <li>Compare classical ML models with deep learning models</li>
-        <li>Provide a simple web-based interface</li>
+        <li>Automate sentiment analysis of academic abstracts</li>
+        <li>Reduce manual effort during literature survey</li>
+        <li>Compare classical ML models with transformer models</li>
+        <li>Provide an interactive web interface</li>
     </ul>
 </section>
 
 <section>
-    <h2>🧠 Technologies Used</h2>
+    <h2>🧠 Models Implemented</h2>
+
+<h3>Logistic Regression (TF-IDF)</h3>
     <ul>
-        <li><strong>Language:</strong> Python</li>
-        <li><strong>NLP:</strong> NLTK, TF-IDF</li>
-        <li><strong>ML Models:</strong> Logistic Regression, Random Forest</li>
-        <li><strong>Deep Learning:</strong> BERT (Transformers)</li>
-        <li><strong>Framework:</strong> Scikit-learn, Hugging Face</li>
-        <li><strong>Web App:</strong> Streamlit</li>
-        <li><strong>Dataset:</strong> arXiv abstracts (Kaggle)</li>
+        <li>Simple and interpretable</li>
+        <li>Accuracy ≈ 72%</li>
+    </ul>
+
+ <h3>Random Forest (TF-IDF)</h3>
+    <ul>
+        <li>Ensemble-based classifier</li>
+        <li>Accuracy ≈ 73%</li>
+    </ul>
+
+<h3>BERT (Transformer Model)</h3>
+    <ul>
+        <li>Model: <code>bert-base-uncased</code></li>
+        <li>Context-aware sentiment understanding</li>
+        <li>Accuracy ≈ 80–85%</li>
     </ul>
 </section>
 
 <section>
     <h2>🔄 System Workflow</h2>
-    <p>
-        Abstract Text → Preprocessing → Feature Extraction →
-        Model Prediction → Sentiment Output
-    </p>
-</section>
-
-<section>
-    <h2>📊 Models Implemented</h2>
-
-   Logistic Regression</h3>
-    <ul>
-        <li>Fast and interpretable</li>
-        <li>Uses TF-IDF features</li>
-        <li>Accuracy ≈ 72%</li>
-    </ul>
-
-  <h3>2. Random Forest</h3>
-    <ul>
-        <li>Ensemble of decision trees</li>
-        <li>Handles non-linearity</li>
-        <li>Accuracy ≈ 73%</li>
-    </ul>
-</section>
-
-<section>
-    <h2>🤖 BERT-Based Sentiment Analysis</h2>
-    <p>
-        BERT (Bidirectional Encoder Representations from Transformers) is a deep
-        learning model that understands contextual meaning in text. It is particularly
-        effective for scientific and academic language where sentiment is subtle.
-    </p>
-
-  <ul>
-        <li><strong>Model:</strong> bert-base-uncased</li>
-        <li><strong>Architecture:</strong> Transformer Encoder</li>
-        <li><strong>Classification:</strong> Positive / Neutral / Negative</li>
-        <li><strong>Fine-Tuned:</strong> On arXiv research abstracts</li>
-    </ul>
-
-   <h3>BERT Workflow</h3>
-    <p>
-        Text → BERT Tokenizer → Pre-trained BERT →
-        Classification Head → Sentiment Output
-    </p>
-
-   <h3>Sample BERT Code</h3>
     <pre>
-from transformers import BertTokenizer, BertForSequenceClassification
-import torch
-
-tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-model = BertForSequenceClassification.from_pretrained(
-    "bert-base-uncased", num_labels=3
-)
-
-text = "This paper shows significant improvement in performance."
-inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
-
-outputs = model(**inputs)
-prediction = torch.argmax(outputs.logits, dim=1)
-print(prediction)
+User Input (Abstract)
+        ↓
+Text Preprocessing
+        ↓
+TF-IDF / BERT Tokenization
+        ↓
+Model Prediction
+        ↓
+Sentiment Output
     </pre>
 </section>
 
 <section>
-    <h2>📈 Model Performance Comparison</h2>
+    <h2>🛠️ Technologies Used</h2>
+    <ul>
+        <li>Python</li>
+        <li>NLTK, TF-IDF</li>
+        <li>Scikit-learn</li>
+        <li>PyTorch</li>
+        <li>Hugging Face Transformers</li>
+        <li>Streamlit</li>
+    </ul>
+</section>
+
+<section>
+    <h2>📂 Project Structure</h2>
+    <pre>
+Research-Abstract-Sentiment-Analysis/
+│
+├── app.py
+├── requirements.txt
+├── README.html
+│
+├── bert_model/
+├── logistic_regression_model.pkl
+├── random_forest_model.pkl
+├── tfidf_vectorizer.pkl
+└── arxiv_sample.csv
+    </pre>
+</section>
+
+<section>
+    <h2>🚀 How to Run</h2>
+    <pre>
+conda create -n research_sentiment python=3.10
+conda activate research_sentiment
+pip install -r requirements.txt
+streamlit run app.py
+    </pre>
+</section>
+
+<section>
+    <h2>📈 Results</h2>
     <table>
         <tr>
             <th>Model</th>
             <th>Accuracy</th>
-            <th>Remarks</th>
         </tr>
         <tr>
             <td>Logistic Regression</td>
             <td>~72%</td>
-            <td>Stable and interpretable</td>
         </tr>
         <tr>
             <td>Random Forest</td>
             <td>~73%</td>
-            <td>Slight bias toward majority class</td>
         </tr>
         <tr>
             <td><strong>BERT</strong></td>
             <td><strong>~80–85%</strong></td>
-            <td>Best contextual understanding</td>
         </tr>
     </table>
 </section>
 
 <section>
-    <h2>🖥️ Streamlit Web Interface</h2>
-    <ul>
-        <li>User pastes abstract text</li>
-        <li>Model processes input</li>
-        <li>Sentiment prediction is displayed</li>
-    </ul>
-</section>
-
-<section>
     <h2>🔮 Future Scope</h2>
     <ul>
-        <li>Full research paper sentiment analysis</li>
-        <li>Use SciBERT for scientific text</li>
-        <li>PDF upload and processing</li>
-        <li>Sentiment + summarization</li>
-        <li>Integration with academic databases</li>
+        <li>PDF-based full paper sentiment analysis</li>
+        <li>SciBERT integration</li>
+        <li>Summarization + sentiment</li>
+        <li>Deployment on Hugging Face Spaces</li>
     </ul>
 </section>
 
@@ -162,13 +148,112 @@ print(prediction)
     <p>
         <strong>Sparshi Jain</strong><br>
         B.Tech – Mathematics & Computing<br>
-        Minor Project (Machine Learning & NLP)
+        Minor Project – Machine Learning & NLP
+    </p>
+</section>
+<section>
+    <h2>🏗️ System Architecture</h2>
+    <p>
+        The architecture of the Research Abstract Sentiment Analysis system follows
+        a modular pipeline-based design. Each component is independent and contributes
+        to efficient sentiment prediction.
+    </p>
+
+ <pre>
+┌──────────────────────────┐
+│        User Input        │
+│  (Research Abstract)     │
+└────────────┬─────────────┘
+             ↓
+┌──────────────────────────┐
+│   Text Preprocessing     │
+│ - Lowercasing            │
+│ - Stopword Removal       │
+│ - Tokenization           │
+│ - Cleaning               │
+└────────────┬─────────────┘
+             ↓
+┌─────────────────────────────────────┐
+│        Feature Engineering           │
+│ ┌───────────────┐  ┌──────────────┐ │
+│ │ TF-IDF Vector │  │ BERT Tokenizer│ │
+│ └───────────────┘  └──────────────┘ │
+└────────────┬────────────────────────┘
+             ↓
+┌─────────────────────────────────────┐
+│       Model Selection Layer         │
+│ ┌──────────────┐ ┌───────────────┐ │
+│ │ Logistic Reg │ │ Random Forest │ │
+│ └──────────────┘ └───────────────┘ │
+│            ┌────────────────────┐ │
+│            │        BERT         │ │
+│            └────────────────────┘ │
+└────────────┬────────────────────────┘
+             ↓
+┌──────────────────────────┐
+│   Sentiment Prediction   │
+│ (Positive / Neutral /    │
+│        Negative)         │
+└────────────┬─────────────┘
+             ↓
+┌──────────────────────────┐
+│  Streamlit Web Interface │
+│   (Result Display)       │
+└──────────────────────────┘
+    </pre>
+</section>
+
+<section>
+    <h3>Random Forest – Confusion Matrix</h3>
+    <p>
+        The confusion matrix below illustrates the classification performance
+        of the Random Forest model across positive, neutral, and negative classes.
+    </p>
+
+ <img src=".png"
+         alt="Random Forest Confusion Matrix"
+         style="width:80%; max-width:700px; display:block; margin:auto;">
+
+<p style="text-align:center; font-style:italic;">
+        Figure 1: Confusion Matrix for Random Forest Model
+    </p>
+</section>
+<section>
+    <h3>Logistic Regression – Confusion Matrix</h3>
+    <p>
+        This confusion matrix represents the performance of the Logistic Regression
+        classifier on the test dataset.
+    </p>
+
+ <img src="images/lr_confusion_matrix.png"
+         alt="Logistic Regression Confusion Matrix"
+         style="width:80%; max-width:700px; display:block; margin:auto;">
+
+<p style="text-align:center; font-style:italic;">
+        Figure 2: Confusion Matrix for Logistic Regression Model
     </p>
 </section>
 
+<section>
+    <h3>Model Accuracy Comparison</h3>
+
+  <img src="images/model_accuracy.png"
+         alt="Model Accuracy Comparison"
+         style="width:70%; max-width:600px; display:block; margin:auto;">
+
+<p style="text-align:center; font-style:italic;">
+        Figure 3: Accuracy comparison between Logistic Regression, Random Forest, and BERT
+    </p>
+</section>
+
+
+
+
+
 <footer>
-    <p>© 2025 Research Abstract Sentiment Analysis Project</p>
+    <p>© 2025 Research Abstract Sentiment Analysis</p>
 </footer>
 
 </body>
 </html>
+
