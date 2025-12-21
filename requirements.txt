@@ -1,14 +1,16 @@
 streamlit
 pandas
 numpy
-matplotlib
 scikit-learn
+matplotlib
 nltk
-pickle-mixin
 python-docx
 fpdf
 transformers
 torch
+requests
+
+
 
 
 
