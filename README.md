@@ -210,7 +210,7 @@ streamlit run app.py
         of the Random Forest model across positive, neutral, and negative classes.
     </p>
 
- <img src=".png"
+ <img src="outpu1t.png"
          alt="Random Forest Confusion Matrix"
          style="width:80%; max-width:700px; display:block; margin:auto;">
 
@@ -225,7 +225,7 @@ streamlit run app.py
         classifier on the test dataset.
     </p>
 
- <img src="images/lr_confusion_matrix.png"
+ <img src="output.png"
          alt="Logistic Regression Confusion Matrix"
          style="width:80%; max-width:700px; display:block; margin:auto;">
 
@@ -237,7 +237,7 @@ streamlit run app.py
 <section>
     <h3>Model Accuracy Comparison</h3>
 
-  <img src="images/model_accuracy.png"
+  <img src="output3.png"
          alt="Model Accuracy Comparison"
          style="width:70%; max-width:600px; display:block; margin:auto;">
 
