@@ -112,11 +112,11 @@ Visualization & Export
 <img src="output5.png" alt="LSTM Accuracy Curve">
 <figcaption>Figure 4: LSTM Training vs Validation Accuracy</figcaption>
 
-<img src="output6.png" alt="LSTM Loss Curve">
+<img src="output3.png" alt="LSTM Loss Curve">
 <figcaption>Figure 5: LSTM Training vs Validation Loss</figcaption>
 
 <h3>Model Accuracy Comparison</h3>
-<img src="output3.png" alt="Model Accuracy Comparison">
+<img src="output6.png" alt="Model Accuracy Comparison">
 <figcaption>Figure 6: Accuracy Comparison – ML vs LSTM vs BERT</figcaption>
 </section>
 <section>
