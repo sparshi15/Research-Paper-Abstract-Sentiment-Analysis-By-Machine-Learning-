@@ -10,7 +10,6 @@
 <body>
 
 <header>
-<h1>Research Abstract Sentiment Analysis</h1>
 <p>Machine Learning → Deep Learning → Transformer (NLP Project)</p>
 </header>
 
