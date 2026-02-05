@@ -73,25 +73,7 @@ models on imbalanced datasets.
 </ul>
 </section>
 
-<section>
-<h2>🏗️ System Architecture</h2>
-<pre>
-User Input (Abstract)
-        ↓
-Text Preprocessing
-        ↓
-Feature Representation
-   ├─ TF-IDF Vectorization
-   ├─ Word Embeddings (LSTM)
-   └─ BERT Tokenization
-        ↓
-Model Prediction
-        ↓
-Sentiment Output
-        ↓
-Visualization & Export
-</pre>
-</section>
+
 
 <section>
 <h2>📊 Evaluation & Results</h2>
@@ -207,6 +189,73 @@ https://cuoaoxdqzbdfqghkjmhw22.streamlit.app/
 </a>
 </p>
 </section>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Research Paper Abstract Sentiment Analysis</title>
+</head>
+
+<body>
+
+
+<h2>🧠 NEW: Agentic AI + RAG + LLM Explanation</h2>
+
+<p>
+To enhance interpretability and trust, the system now includes an
+<strong>Agentic AI layer</strong> that explains sentiment predictions instead
+of only reporting labels.
+</p>
+
+<h3>🤖 Agentic Decision System</h3>
+<ul>
+<li>Observes sentiment predictions and confidence levels</li>
+<li>Decides whether additional reasoning is required</li>
+<li>Triggers RAG + LLM only for medium or low confidence cases</li>
+</ul>
+
+<h3>📚 Retrieval-Augmented Generation (RAG)</h3>
+<ul>
+<li>Retrieves similar research abstracts using semantic embeddings</li>
+<li>Provides contextual evidence to support explanations</li>
+</ul>
+
+<h3>🦙 LLM-Based Explanation (Local LLaMA)</h3>
+<ul>
+<li>Uses a locally hosted LLaMA model via Ollama</li>
+<li>No API key or cloud dependency required</li>
+<li>Generates human-readable, context-aware explanations</li>
+</ul>
+
+</section>
+
+<section>
+<h2>🏗️ Updated System Architecture</h2>
+
+<pre>
+User Input (Abstract / CSV)
+        ↓
+Text Preprocessing
+        ↓
+Feature Representation
+   ├─ TF-IDF Vectorization
+   ├─ Word Embeddings (LSTM)
+   └─ BERT Tokenization
+        ↓
+Sentiment Prediction
+        ↓
+Agentic Decision Layer
+   ├─ High Confidence → Direct Output
+   └─ Medium / Low Confidence → RAG + LLM
+        ↓
+LLM Explanation (LLaMA)
+        ↓
+Visualization & Export
+</pre>
+
+</section>
 
 <section>
 <h2>🛠️ Technologies Used</h2>
@@ -218,7 +267,9 @@ https://cuoaoxdqzbdfqghkjmhw22.streamlit.app/
 <li>Hugging Face Transformers</li>
 <li>PyTorch</li>
 <li>Streamlit</li>
-<li>Matplotlib, Seaborn</li>
+<li>Sentence Transformers</li>
+<li>FAISS / Nearest Neighbors</li>
+<li>Ollama (Local LLaMA)</li>
 </ul>
 </section>
 
@@ -227,28 +278,13 @@ https://cuoaoxdqzbdfqghkjmhw22.streamlit.app/
 <ul>
 <li>Balanced and human-labeled sentiment datasets</li>
 <li>SciBERT-based sentiment classification</li>
-<li>Retrieval-Augmented Generation (RAG) for explanations</li>
 <li>Full research paper PDF analysis</li>
+<li>Multi-document RAG explanations</li>
+<li>Explainable AI dashboards for literature review</li>
 </ul>
 </section>
 
-<section>
-<h2>👩‍💻 Author</h2>
-<p>
-  
-<strong>Sparshi Jain</strong><br>
-thanks
-B.Tech – Mathematics & Computing<br>
-Minor Project – Machine Learning & NLP
-</p>
-</section>
 
-<footer>
-<p>© 2025 Research Abstract Sentiment Analysis</p>
-</footer>
-
-</body>
-</html>
 
   
 
