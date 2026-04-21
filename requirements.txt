@@ -8,11 +8,12 @@ python-docx
 fpdf
 transformers
 torch
+torchvision
 requests
 faiss-cpu
 ollama
-torch
-torchvision
+sentence-transformers
+
 
 
 
