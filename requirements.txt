@@ -11,6 +11,8 @@ torch
 requests
 faiss-cpu
 ollama
+torch
+torchvision
 
 
 
