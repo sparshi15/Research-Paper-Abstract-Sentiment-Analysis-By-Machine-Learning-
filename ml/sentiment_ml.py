@@ -3,10 +3,11 @@ import os
 
 class MLSentiment:
     def __init__(self):
-        base = "models"
+        base = "."  # repo root
         self.tfidf = pickle.load(open(os.path.join(base, "tfidf_vectorizer.pkl"), "rb"))
         self.lr = pickle.load(open(os.path.join(base, "logistic_regression_model.pkl"), "rb"))
         self.rf = pickle.load(open(os.path.join(base, "random_forest_model.pkl"), "rb"))
+
 
     def predict(self, text):
         X = self.tfidf.transform([text])
