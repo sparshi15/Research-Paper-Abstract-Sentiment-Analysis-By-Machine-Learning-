@@ -9,6 +9,8 @@ fpdf
 transformers
 torch
 requests
+faiss-cpu
+
 
 
 
